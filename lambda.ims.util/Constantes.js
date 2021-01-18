@@ -1,0 +1,28 @@
+
+const CONST_PUNTOS = ":";
+const CONST_PUNTO = ".";
+const CONST_ESLASH = "/";
+const CONST_MSG_OK = "OK";
+const CONST_COD_OK = 1;
+const CONST_MSG_ERROR = "ERROR";
+const CONST_COD_ERROR = 0;
+const CONST_VACIO = "";
+const CONST_COMA = ",";
+const CONST_SALTO_LINEA = "\n";
+const CONST_FORMATO_FECHA_S3 = "YYYYMMDDhhmmss";
+
+
+
+module.exports = {
+  CONST_PUNTOS,
+  CONST_PUNTO,
+  CONST_ESLASH,
+  CONST_MSG_OK,
+  CONST_COD_OK,
+  CONST_MSG_ERROR,
+  CONST_COD_ERROR,
+  CONST_VACIO,
+  CONST_COMA,
+  CONST_SALTO_LINEA,
+  CONST_FORMATO_FECHA_S3
+};

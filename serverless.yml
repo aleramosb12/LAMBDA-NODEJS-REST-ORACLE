@@ -1,0 +1,179 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: lambda-ims-incremental
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+custom:
+# Crendeciales de BD
+  db_ip: '192.168.1.2'
+  db_instance: 'lambdadb'
+  db_port: '1603'
+  db_user: 'BIGT_ADM'
+  db_password: 'lambda'
+  db_ims_procedure_incremental: 'lambda_pkg.lmbda_prc'
+  db_ims_procedure_incremental_in_origen: 'BKR'
+  db_ims_procedure_incremental_in_usuario: 'IMS'
+  db_ims_procedure_incremental_in_version: '1'
+  db_ims_procedure_incremental_rollback: 'lambda_pkg.lmbda_prc'
+# Crendeciales de API IMS
+  api_host: 'imsperupub.lambdaqa.com'
+  api_port: '443'
+  api_path: '/WSActualizaStock'
+  api_method: 'POST'
+  api_context_type: 'text/plain'
+  api_Authorization: 'Basic 2345678=='
+  api_Encoding: 'utf8'
+# Crendeciales de BUCKeT IMS
+  bucket_host: 'bucket-ims-test-peru'
+  bucket_name: 'hello_world'
+  bucket_extencion: '.txt'
+  bucket_region: 'us-east-1'
+  bucket_key_id: '123456'
+  bucket_access_key: '/12344'
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+  # Crendeciales de BD
+    db_ip: ${self:custom.db_ip}
+    db_instance: ${self:custom.db_instance}
+    db_port: ${self:custom.db_port}
+    db_user: ${self:custom.db_user}
+    db_password: ${self:custom.db_password}
+    db_ims_procedure_incremental: ${self:custom.db_ims_procedure_incremental}
+    db_ims_procedure_incremental_in_origen: ${self:custom.db_ims_procedure_incremental_in_origen}
+    db_ims_procedure_incremental_in_usuario: ${self:custom.db_ims_procedure_incremental_in_usuario}
+    db_ims_procedure_incremental_in_version: ${self:custom.db_ims_procedure_incremental_in_version}
+    db_ims_procedure_incremental_rollback: ${self:custom.db_ims_procedure_incremental_rollback}
+
+  # Crendeciales de API IMS
+    api_host: ${self:custom.api_host}
+    api_port: ${self:custom.api_port}
+    api_path: ${self:custom.api_path}
+    api_method: ${self:custom.api_method}
+    api_context_type: ${self:custom.api_context_type}
+    api_Authorization: ${self:custom.api_Authorization}
+    api_Encoding: ${self:custom.api_Encoding}
+  # Crendeciales de BUCKeT IMS
+    bucket_host: ${self:custom.bucket_host}
+    bucket_name: ${self:custom.bucket_name}
+    bucket_extencion: ${self:custom.bucket_extencion}
+    bucket_region: ${self:custom.bucket_region}
+    bucket_key_id: ${self:custom.bucket_key_id}
+    bucket_access_key: ${self:custom.bucket_access_key}
+    
+
+# you can overwrite defaults here
+#  stage: dev
+#  region: us-east-1
+
+# you can add statements to the Lambda function's IAM Role here
+#  iamRoleStatements:
+#    - Effect: "Allow"
+#      Action:
+#        - "s3:ListBucket"
+#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+#    - Effect: "Allow"
+#      Action:
+#        - "s3:PutObject"
+#      Resource:
+#        Fn::Join:
+#          - ""
+#          - - "arn:aws:s3:::"
+#            - "Ref" : "ServerlessDeploymentBucket"
+#            - "/*"
+
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
+
+# you can add packaging information here
+#package:
+#  include:
+#    - include-me.js
+#    - include-me-dir/**
+#  exclude:
+#    - exclude-me.js
+#    - exclude-me-dir/**
+package:
+  exclude:
+    - node_modules/** # no need to add this yourself, this plugin does it for you
+    
+plugins:
+  - serverless-plugin-include-dependencies
+  - serverless-offline
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello
+          method: get
+#    The following are a few example events you can configure
+#    NOTE: Please make sure to change your handler code to work with those events
+#    Check the event documentation for details
+#    events:
+#      - http:
+#          path: users/create
+#          method: get
+#      - websocket: $connect
+#      - s3: ${env:BUCKET}
+#      - schedule: rate(10 minutes)
+#      - sns: greeter-topic
+#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
+#      - alexaSkill: amzn1.ask.skill.xx-xx-xx-xx
+#      - alexaSmartHome: amzn1.ask.skill.xx-xx-xx-xx
+#      - iot:
+#          sql: "SELECT * FROM 'some_topic'"
+#      - cloudwatchEvent:
+#          event:
+#            source:
+#              - "aws.ec2"
+#            detail-type:
+#              - "EC2 Instance State-change Notification"
+#            detail:
+#              state:
+#                - pending
+#      - cloudwatchLog: '/aws/lambda/hello'
+#      - cognitoUserPool:
+#          pool: MyUserPool
+#          trigger: PreSignUp
+#      - alb:
+#          listenerArn: arn:aws:elasticloadbalancing:us-east-1:XXXXXX:listener/app/my-load-balancer/50dc6c495c0c9188/
+#          priority: 1
+#          conditions:
+#            host: example.com
+#            path: /hello
+
+#    Define function environment variables here
+#    environment:
+#      variable2: value2
+
+# you can add CloudFormation resource templates here
+#resources:
+#  Resources:
+#    NewResource:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: my-new-bucket
+#  Outputs:
+#     NewOutput:
+#       Description: "Description for the output"
+#       Value: "Some output value"
